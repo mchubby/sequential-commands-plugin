@@ -29,6 +29,11 @@ jobs:
       with:
         arguments: build
 
+    - name: Setup and execute Gradle 'jar' task
+      uses: gradle/gradle-build-action@v2.1.5
+      with:
+        arguments: jar
+
     - name: debug, list build
       run: |
         ls -alR build
