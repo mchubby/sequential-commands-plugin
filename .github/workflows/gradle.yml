@@ -29,8 +29,12 @@ jobs:
       with:
         arguments: build
 
+    - name: Store build.gradle's currentVersion to VERSION job output
+      id: get_version
+      run: VERSION=$(./gradlew currentVersion -q -Prelease.quiet) && echo "::set-output name=VERSION::$VERSION"
+
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: Rundeck-Plugin-${{ github.ref_name }}-${{ github.sha }}
-        path: build/libs/sequential-commands-plugin-1.0.0.jar
+        name: JAR Artifact
+        path: build/libs/sequential-commands-plugin-${{ steps.get_version.outputs.VERSION }}.jar
