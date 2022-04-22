@@ -29,17 +29,8 @@ jobs:
       with:
         arguments: build
 
-    - name: Setup and execute Gradle 'jar' task
-      uses: gradle/gradle-build-action@v2.1.5
-      with:
-        arguments: jar
-
-    - name: debug, list build
-      run: |
-        ls -alR build
-
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: Grails-Plugin-${{ github.ref_name }}-${{ github.sha }}
-        path: build/libs/sequential-commands-plugin-${{ github.ref_name }}-${{ github.sha }}.jar
+        name: Rundeck-Plugin-${{ github.ref_name }}-${{ github.sha }}
+        path: build/libs/sequential-commands-plugin-1.0.0.jar
