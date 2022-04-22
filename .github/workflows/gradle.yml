@@ -29,6 +29,10 @@ jobs:
       with:
         arguments: build
 
+    - name: debug, list build
+      run: |
+        ls -alR build
+
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
       with:
