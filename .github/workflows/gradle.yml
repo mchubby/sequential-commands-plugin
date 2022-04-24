@@ -54,9 +54,10 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: JAR Artifact
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: 'JAR Artifact/sequential-commands-plugin-${{ needs.build.outputs.VERSION }}.jar'
+          files: '${{ github.workspace }}/sequential-commands-plugin-${{ needs.build.outputs.VERSION }}.jar'
           fail_on_unmatched_files: true
           token: ${{ github.token }}
