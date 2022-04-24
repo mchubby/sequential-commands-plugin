@@ -16,6 +16,10 @@ jobs:
     permissions:
       contents: read
 
+    # Map a step output to a job output
+    outputs:
+      VERSION: ${{ steps.get_version.outputs.VERSION }}
+
     steps:
     - uses: actions/checkout@v3
     - name: Set up JDK 11
@@ -47,8 +51,12 @@ jobs:
       contents: write
     if: startsWith(github.ref, 'refs/tags/')
     steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: JAR Artifact
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: build/libs/sequential-commands-plugin-${{ needs.build.outputs.VERSION }}.jar
+          files: 'JAR Artifact/sequential-commands-plugin-${{ needs.build.outputs.VERSION }}.jar'
+          fail_on_unmatched_files: true
           token: ${{ github.token }}
