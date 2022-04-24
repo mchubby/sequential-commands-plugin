@@ -1,19 +1,20 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Java CI with Gradle
-
-on:
-  push:
-    branches: [ main ]
-
-permissions:
-  contents: read
+name: Java CI with Gradle, release for tagged
+on: push
+#on:
+#  push:
+#    branches:
+#      - main
+#    tags:
+#      - "*"
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
     - uses: actions/checkout@v3
@@ -38,3 +39,16 @@ jobs:
       with:
         name: JAR Artifact
         path: build/libs/sequential-commands-plugin-${{ steps.get_version.outputs.VERSION }}.jar
+
+  release:
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    if: startsWith(github.ref, 'refs/tags/')
+    steps:
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/libs/sequential-commands-plugin-${{ needs.build.outputs.VERSION }}.jar
+          token: ${{ github.token }}
